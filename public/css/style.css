@@ -1,0 +1,148 @@
+body{
+font-family: "Emblema One", system-ui;
+    background-color: black !important;
+}
+a{
+text-decoration: none;
+}
+.div_accueil{
+    display: flex;
+    gap: 5em;
+    justify-content: center;
+    margin-top: 5em;
+    
+    ;
+}
+
+.div_accueil1{
+    background-color: black; 
+    width: 500px;
+    height:200px ;
+    border-color: white;
+    text-align:left;
+    color: white;
+    padding-left: 1em;
+    display: flex;
+    box-shadow: 10px 10px 10px rgb(95, 93, 93);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    
+}
+.div_accueil1:hover{
+    color: rgb(80, 79, 79);
+    background-color: #000000;
+    transform: translateY(-10px);
+    
+}
+
+
+.img_accueil1{
+    width: 150px;
+    height: 100px;
+}
+.img_accueil2{
+    width: 190px;
+    height: 150px;
+}
+
+.texte_img{
+    display: flex;
+    align-items: end;
+}
+.texte_cards{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.img_cards{
+    display: flex;
+    align-items: end;
+}
+
+.add_cards{
+    
+    
+}
+.imgpreview{
+width: 290px;
+height:403px;
+margin-bottom: 1em;
+
+}
+img{
+    border: solid rgb(0, 0, 0);
+    border-radius: 25px;
+}
+
+.formflex{
+    display: flex;
+    flex-direction: row;
+    background-color: aliceblue;
+    padding-top: 3em;
+justify-content:space-around;
+}
+
+.div_change{
+    display:flex ;
+}
+
+.button_submit{
+    margin-top: 2em;
+}
+
+
+.search{
+    display: flex;
+    justify-content: center;
+    margin-top: 5em;
+    margin-bottom: 0.5em;
+}
+.widthinput{
+    width: 20em;
+}
+
+.form{
+    margin-top: 2em;
+    display: flex;
+    margin-right: 8px;
+    gap: 0.3em;
+}
+.prix_radio{
+height: 0.3em;
+}
+
+.radio_etat{
+    display: flex;
+    flex-direction: column;
+}
+.csv{
+    width: 55em;
+    display: flex;
+    justify-content: center;
+}
+
+
+.table_card{
+display: flex;
+color: white;
+flex-direction: column;
+align-items: center;
+margin-left: 46.2em;
+margin-bottom: 2em;
+position: absolute;
+
+}
+
+
+.tbody{
+    background-color: rgb(240, 239, 241);
+    color: rgb(15, 15, 15);
+    display: flex;
+    flex-direction: column;
+    width: 20em;
+    
+}
+
+td:hover{
+    color: rgb(20, 5, 240);
+
+}
