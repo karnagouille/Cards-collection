@@ -5,9 +5,7 @@
 {% block body %}
 <div class="search">
     <input type="search" id="card_search_input" list="card_list" class="widthinput"> 
-
-
-    <button type="" id="card_search">rechercher</button>
+    <button type="button" id="card_search">rechercher</button>
 
 </div>
     <table class="table_card"> 
@@ -25,21 +23,30 @@
         <div class="div_change">
             <div>
                     {{form_start(form)}}
+
                 <div class="form">
                     {{ form_label(form.etat) }}
                     : {{ form_widget(form.etat) }}
                 </div>
+
                 <div class="form">
                     {{ form_label(form.quantite) }}
                     : {{ form_widget(form.quantite) }}
                 </div>
+
+                <div class="form">
+                    : {{ form_widget(form.editions) }}
+                </div>
+
                 <div class="form">
                     {{ form_label(form.prix) }}
                     : {{ form_widget(form.prix) }}
                 </div>
+
                 <div class="form">
                     {{ form_widget(form.cardId) }}
                 </div>
+                
                 <div class="button_submit">
                     <button type="submit">Ajouter</button>
                 </div>
@@ -49,7 +56,13 @@
 
             <div>
                 <div class="imgpreview">
-                    <img id="img" src="" height="400" alt="Prévisualisation de l'image…" />
+                    {% if card and card.image_uris is defined %}
+    <img src="{{ card.image_uris.png }}" height="400">
+{% elseif card and card.card_faces is defined %}
+    <img src="{{ card.card_faces[0].image_uris.png }}" height="400">
+{% else %}
+    <img src="" height="400">
+{% endif %}
                 </div>
             </div>  
         </div>    

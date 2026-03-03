@@ -13,44 +13,58 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AddCardsController extends AbstractController
 {
-    //“Si aucun name n’est fourni dans l’URL,alors donne à $name la valeur '' (chaîne vide).
-    #[Route('/card/{name}', name: 'card', defaults: ['name' => ''])]
-    public function card(string $name, ScryfallService $scryfallService,Request $request,EntityManagerInterface $em): Response
-    {
-        //Si $name n’est pas vide,alors utilise ce nom pour appeler l’API et récupérer les informations de la carte.”
-        if($name !== '') {
-            $card = $scryfallService->findcard($name);
+    #[Route('/card', name: 'card')]
+public function card(Request $request,ScryfallService $scryfallService,EntityManagerInterface $em): Response
+{
+    $name = $request->query->get('name', '');
+
+    $card = null;
+    $editions = [];
+
+    if (!empty($name)) {
+
+        $card = $scryfallService->findcard($name);
+
+        if ($card) {
+            $editions = $scryfallService->findAllEditions($name);
+        } else {
+            $this->addFlash('error', 'Carte introuvable.');
         }
+    }
 
-        $cartes = new Cartes();
+    $cartes = new Cartes();
+    $cartes->setNom($card['name'] ?? '');
 
-        //“Si on a trouvé une carte, mets son nom,sinon laisse vide.”
-        $cartes->setNom(isset($card) ? $card['name'] : '');
+    $form = $this->createForm(AddCardsType::class, $cartes, [
+        'editions' => $editions,
+    ]);
 
-        $form = $this->createForm(AddCardsType::class, $cartes);
-        $form->handleRequest($request);
+    $form->handleRequest($request);
 
+    if ($form->isSubmitted() && $form->isValid()) {
+        $cartes->setCardId($card['id']);
+        $cardData = $scryfallService->findcard($name);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($cardData) {
 
-        $cardData = $scryfallService->findcard($cartes->getCardId());
-
-        $cartes->setNom($cardData['name']);
-        $cartes->setCouleurs(implode(',', $cardData['colors'] ?? []));
-        $cartes->setType($cardData['type_line']);
-        $cartes->setCoupEnMana((int) $cardData['cmc']);
-        $cartes->setImage($cardData['image_uris']['png']?? '');
-
+            $cartes->setNom($cardData['name']);
+            $cartes->setCouleurs(implode(',', $cardData['colors'] ?? []));
+            $cartes->setType($cardData['type_line']);
+            $cartes->setCoupEnMana((int) $cardData['cmc']);
+            $cartes->setImage($cardData['image_uris']['png'] ?? '');
+            $cartes->setEditions($cardData['set_name']);
 
             $em->persist($cartes);
             $em->flush();
-            return $this->redirectToRoute('card', ['name' => $name]);
         }
-        
-        return $this->render('add_cards/add_cards.html.twig',[
-            'card'=> isset($card) ? $card : null,
-            'form'=>$form->createView()
-        ]);
+
+       return $this->redirectToRoute('card');
     }
+
+    return $this->render('add_cards/add_cards.html.twig', [
+        'card' => $card,
+        'form' => $form->createView()
+    ]);
+}
 }
 

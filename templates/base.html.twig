@@ -15,11 +15,14 @@
         {% endblock %}
 
         {% block javascripts %}
-        <script src="/main.js" defer></script>
+       <script src="{{ asset('main.js') }}?v={{ random() }}" defer></script>
             
         {% endblock %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
-<header>
+
+    </head>
+    <body>
+     <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{path ('accueil')}}">Accueil</a>
@@ -44,10 +47,10 @@
     </div>
     </nav>
 </header>
-    </head>
-    <body>
         {% block body %}
     
+   
         {% endblock %}
     </body>
 </html>
+

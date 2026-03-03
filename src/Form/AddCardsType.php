@@ -34,6 +34,11 @@ class AddCardsType extends AbstractType
                 
 
             ])
+            ->add('editions',ChoiceType::class,[
+                'choices'=>$options['editions'],
+                'placeholder'=>'choisir une édition',
+                'required'=> true,
+            ])
             ->add('quantite',ChoiceType::class,[
                 'choices'=>[
                     '1'=>'1',
@@ -51,6 +56,8 @@ class AddCardsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Cartes::class,
+            'editions'=>[]
         ]);
+        $resolver->setAllowedTypes('editions', 'array');
     }
 }

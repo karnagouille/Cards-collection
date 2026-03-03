@@ -44,7 +44,7 @@ class Cartes
     private ?string $cardId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $edition = null;
+    private ?string $editions = null;
 
 
     public function getId(): ?int
@@ -172,14 +172,14 @@ class Cartes
         return $this;
     }
 
-    public function getEdition(): ?string
+    public function getEditions(): ?string
     {
-        return $this->edition;
+        return $this->editions;
     }
 
-    public function setEdition(string $edition): static
+    public function setEditions(string $editions): static
     {
-        $this->edition = $edition;
+        $this->editions = $editions;
 
         return $this;
     }

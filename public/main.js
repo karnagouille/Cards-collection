@@ -1,138 +1,51 @@
+function init() {
 
-
-console.log('JS chargé');
-// Prévisualisation d'image
-function previewFile() {
-    const preview = document.querySelector("img");
-    const file = document.querySelector("input[type=file]").files[0];
-    const reader = new FileReader();
-
-    reader.addEventListener("load",() => {
-      // on convertit l'image en une chaîne de caractères base64
-    preview.src = reader.result;
-    },
-    false,
-);
-
-    if (file) {
-    reader.readAsDataURL(file);
-}
-}
-
-
-
-const input = document.getElementById('card_search_input');
-
-input.addEventListener('change',async ()=>{    
-    getData();
-});
-
-
-
-async function getData() {
-
-    const name = input.value;
-    const url = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(name)}&include_multilingual=true`;    
-    const response = await fetch(url);
-    const json = await response.json();
-    const card =json.data;
-
-
+    const input = document.getElementById('card_search_input');
     const tbody = document.getElementById('tbody');
-    tbody.innerHTML = '';
-    for (let i = 0; i < Math.min(5, card.length); i++) {
 
+    if (!input) return;
 
-        const tableau = document.createElement('tr');
-        const td = document.createElement('td');
+    input.addEventListener('input', async () => {
 
-        tableau.appendChild(td);
-        tbody.appendChild(tableau);
-        td.textContent = card[i].name;
-        
-        td.addEventListener('click',()=>{
-            console.log(card[i].image_uris.png)
-            const img = document.getElementById('img');
-        img.src = card[i].image_uris.png;
-        const id = document.getElementById('add_cards_cardId');
-        id.value = card[i].id;
-        })
+        const name = input.value;
 
-        
-        
-    }
-    return card
+        if (name.length < 2) {
+            tbody.innerHTML = '';
+            return;
+        }
 
-}
+        const url = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(name)}&include_multilingual=true`;    
+        const response = await fetch(url);
+        const json = await response.json();
+        const cards = json.data;
 
+        tbody.innerHTML = '';
 
+        for (let i = 0; i < Math.min(5, cards.length); i++) {
 
+            const tr = document.createElement('tr');
 
+            const tdName = document.createElement('td');
+            tdName.textContent = cards[i].name;
 
+            const tdAction = document.createElement('td');
+            const button = document.createElement('button');
+            button.textContent = "Choisir";
+            button.type = "button";
 
+            button.addEventListener('click', () => {
+                const selectedName = cards[i].name;
+                window.location.href = `/card?name=${encodeURIComponent(selectedName)}`;
+            });
 
+            tdAction.appendChild(button);
+            tr.appendChild(tdName);
+            tr.appendChild(tdAction);
+            tbody.appendChild(tr);
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-const input = document.getElementById('card_search_input');
-
-input.addEventListener('change', async () => {
-    const cards = await searchCard();
-    cards.forEach((card) => {
-        addCardToList(card);
-    });
-});
-
-async function searchCard() {
-    if(!(input instanceof HTMLInputElement)) {
-        return;
-    }
-
-    const cardName = input.value;
-    const apiUrl = https://api.scryfall.com/cards/search?q=${encodeURI(cardName)};
-    const response = await fetch(apiUrl);
-    const json = await response.json();
-    const cards = json.data;
-
-    return cards;
-}
-
-function addCardToList() {
-    const list = document.getElementById('card_list');
-
-    console.log(json);
-
-    list.innerHTML = '';
-
-    cards.forEach((card) => {
-        const option = document.createElement('option');
-        option.value = card.name;
-        list.appendChild(option);
     });
 }
-    */
+
+document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('turbo:load', init);
